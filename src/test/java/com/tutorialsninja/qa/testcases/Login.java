@@ -43,7 +43,7 @@ public class Login {
 	@Test(priority=2)
 	public void verifyLoginWithValidEmailAndInvalidPassword() {
 		driver.findElement(By.id("input-email")).sendKeys("sushil.kamble@test.com");
-		driver.findElement(By.id("input-password")).sendKeys("12345");
+		driver.findElement(By.id("input-password")).sendKeys("123451111");
 		driver.findElement(By.xpath("//input[@value='Login']")).click();
 		
 		String actualWarningMessage = driver.findElement(By.xpath("//div[contains(@class,'alert-dismissible')]")).getText();
