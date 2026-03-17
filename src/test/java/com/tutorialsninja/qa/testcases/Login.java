@@ -35,7 +35,7 @@ public class Login {
 		driver.findElement(By.id("input-password")).sendKeys("12345");
 		driver.findElement(By.xpath("//input[@value='Login']")).click();
 		
-		Assert.assertTrue(driver.findElement(By.linkText("Edit your account information")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.linkText("Edit your account information")).isDisplayed(),"Edit your account information option is not displayed");
 		
 	}
 	
@@ -45,16 +45,19 @@ public class Login {
 		driver.findElement(By.id("input-email")).sendKeys("sushil.kamble0001@test.com");
 		driver.findElement(By.id("input-password")).sendKeys("12345");
 		driver.findElement(By.xpath("//input[@value='Login']")).click();
-		Assert.assertTrue(driver.findElement(By.xpath("//div[contains(@class,'alert-dismissible')]")).isDisplayed());
 		
+		String actualWarningMessage = driver.findElement(By.xpath("//div[contains(@class,'alert-dismissible')]")).getText();
+		String expectedWarningMessage = "Warning: No match for E-Mail Address and/or Password.";
+		Assert.assertTrue(actualWarningMessage.contains(expectedWarningMessage),"Expected warning message is not displayed");
 	}
 	
 	@Test(priority=3)
 	public void verifyLoginWithoutCredentials() {
 		
 		driver.findElement(By.xpath("//input[@value='Login']")).click();
-		Assert.assertTrue(driver.findElement(By.xpath("//div[contains(@class,'alert-dismissible')]")).isDisplayed());
-		
+		String actualWarningMessage = driver.findElement(By.xpath("//div[contains(@class,'alert-dismissible')]")).getText();
+		String expectedWarningMessage = "Warning: No match for E-Mail Address and/or Password.";
+		Assert.assertTrue(actualWarningMessage.contains(expectedWarningMessage),"Expected warning message is not displayed");
 	}
 
 }
