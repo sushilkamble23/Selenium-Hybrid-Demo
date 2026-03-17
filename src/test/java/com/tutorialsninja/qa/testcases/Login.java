@@ -29,13 +29,31 @@ public class Login {
 		driver.quit();
 	}
 	
-	@Test
+	@Test(priority=1)
 	public void verifyLoginWithValidCredentials() {
 		driver.findElement(By.id("input-email")).sendKeys("sushil.kamble@test.com");
 		driver.findElement(By.id("input-password")).sendKeys("12345");
 		driver.findElement(By.xpath("//input[@value='Login']")).click();
 		
 		Assert.assertTrue(driver.findElement(By.linkText("Edit your account information")).isDisplayed());
+		
+	}
+	
+	@Test(priority=2)
+	public void verifyLoginWithInvalidCredentials() {
+		
+		driver.findElement(By.id("input-email")).sendKeys("sushil.kamble0001@test.com");
+		driver.findElement(By.id("input-password")).sendKeys("12345");
+		driver.findElement(By.xpath("//input[@value='Login']")).click();
+		Assert.assertTrue(driver.findElement(By.xpath("//div[contains(@class,'alert-dismissible')]")).isDisplayed());
+		
+	}
+	
+	@Test(priority=3)
+	public void verifyLoginWithoutCredentials() {
+		
+		driver.findElement(By.xpath("//input[@value='Login']")).click();
+		Assert.assertTrue(driver.findElement(By.xpath("//div[contains(@class,'alert-dismissible')]")).isDisplayed());
 		
 	}
 
