@@ -1,6 +1,7 @@
 package com.tutorialsninja.qa.testcases;
 
 import java.time.Duration;
+import java.util.Date;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -40,9 +41,8 @@ public class Login {
 	}
 	
 	@Test(priority=2)
-	public void verifyLoginWithInvalidCredentials() {
-		
-		driver.findElement(By.id("input-email")).sendKeys("sushil.kamble0001@test.com");
+	public void verifyLoginWithValidEmailAndInvalidPassword() {
+		driver.findElement(By.id("input-email")).sendKeys("sushil.kamble@test.com");
 		driver.findElement(By.id("input-password")).sendKeys("12345");
 		driver.findElement(By.xpath("//input[@value='Login']")).click();
 		
@@ -52,12 +52,43 @@ public class Login {
 	}
 	
 	@Test(priority=3)
-	public void verifyLoginWithoutCredentials() {
-		
+	public void verifyLoginWithInvalidEmailAndValidPassword() {
+		driver.findElement(By.id("input-email")).sendKeys(generateEmailWithTimeStamp());
+		driver.findElement(By.id("input-password")).sendKeys("12345");
 		driver.findElement(By.xpath("//input[@value='Login']")).click();
+		
 		String actualWarningMessage = driver.findElement(By.xpath("//div[contains(@class,'alert-dismissible')]")).getText();
 		String expectedWarningMessage = "Warning: No match for E-Mail Address and/or Password.";
 		Assert.assertTrue(actualWarningMessage.contains(expectedWarningMessage),"Expected warning message is not displayed");
+	}
+	
+	@Test(priority=4)
+	public void verifyLoginWithInvalidCredentials() {
+		
+		driver.findElement(By.id("input-email")).sendKeys(generateEmailWithTimeStamp());
+		driver.findElement(By.id("input-password")).sendKeys("1234567890");
+		driver.findElement(By.xpath("//input[@value='Login']")).click();
+		
+		String actualWarningMessage = driver.findElement(By.xpath("//div[contains(@class,'alert-dismissible')]")).getText();
+		String expectedWarningMessage = "Warning: No match for E-Mail Address and/or Password.";
+		Assert.assertTrue(actualWarningMessage.contains(expectedWarningMessage),"Expected warning message is not displayed");
+	}
+	
+	@Test(priority=5)
+	public void verifyLoginWithoutCredentials() {
+		
+		driver.findElement(By.xpath("//input[@value='Login']")).click();
+		
+		String actualWarningMessage = driver.findElement(By.xpath("//div[contains(@class,'alert-dismissible')]")).getText();
+		String expectedWarningMessage = "Warning: No match for E-Mail Address and/or Password.";
+		Assert.assertTrue(actualWarningMessage.contains(expectedWarningMessage),"Expected warning message is not displayed");
+	}
+	
+	public String generateEmailWithTimeStamp() {
+		Date date = new Date();
+		return date.toString().replace(" ", "_").replace(":", "_")+"@gmail.com";
+		
+		
 	}
 
 }
